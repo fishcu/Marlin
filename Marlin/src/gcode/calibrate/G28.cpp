@@ -420,8 +420,14 @@ void GcodeSuite::G28(const bool always_home_all) {
           homeaxis(Z_AXIS);
         #endif
 
-        #if HOMING_Z_WITH_PROBE && defined(Z_AFTER_PROBING)
-          move_z_after_probing();
+        // #if HOMING_Z_WITH_PROBE && defined(Z_AFTER_PROBING)
+        //   move_z_after_probing();
+        // #endif
+        #if defined(Z_AFTER_PROBING)
+          if (current_position[Z_AXIS] != Z_AFTER_PROBING) {
+            do_blocking_move_to_z(Z_AFTER_PROBING);
+            current_position[Z_AXIS] = Z_AFTER_PROBING;
+          }
         #endif
 
       } // doZ
